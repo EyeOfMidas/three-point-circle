@@ -97,18 +97,15 @@
         }
 
         function computeCircleFromPoints(p0, p1, p2) {
-            let midpointOfP0P1 = { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
-            let midpointOfP1P2 = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
-            let slopeOfP0P1 = (p1.y - p0.y) / (p1.x - p0.x);
-            let slopeOfP1P2 = (p2.y - p1.y) / (p2.x - p1.x);
+            let midpointOfP0P1 = getMidpoint(p0, p1);
+            let midpointOfP1P2 = getMidpoint(p1, p2);
+            let slopeOfP0P1 = getSlope(p0, p1);
+            let slopeOfP1P2 = getSlope(p1, p2);
 
             let inverseSlopeOfP0P1 = -1 / slopeOfP0P1;
             let inverseSlopeOfP1P2 = -1 / slopeOfP1P2;
 
-            let centerPoint = {
-                x: (- (inverseSlopeOfP1P2 * midpointOfP1P2.x) + midpointOfP1P2.y - midpointOfP0P1.y + (inverseSlopeOfP0P1 * midpointOfP0P1.x)) / (inverseSlopeOfP0P1 - inverseSlopeOfP1P2),
-                y: inverseSlopeOfP0P1 * ((- (inverseSlopeOfP1P2 * midpointOfP1P2.x) + midpointOfP1P2.y - midpointOfP0P1.y + (inverseSlopeOfP0P1 * midpointOfP0P1.x)) / (inverseSlopeOfP0P1 - inverseSlopeOfP1P2) - midpointOfP0P1.x) + midpointOfP0P1.y
-            };
+            let centerPoint = getIntersectPoint(midpointOfP0P1, inverseSlopeOfP0P1, midpointOfP1P2, inverseSlopeOfP1P2);
 
             let radius = Math.abs(Math.hypot(centerPoint.x - p0.x, centerPoint.y - p0.y));
 
@@ -139,6 +136,32 @@
             return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: angleToP0, endAngle: angleToP2 };
         }
 
+        function getIntersectPoint(p0, slope0, p1, slope1) {
+            return {
+                x: (- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1),
+                y: slope0 * ((- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1) - p0.x) + p0.y
+            };
+        }
+
+        function getSlope(p0, p1) {
+            return (p1.y - p0.y) / (p1.x - p0.x);
+        }
+
+        function getTangentPoint(centerPoint, p0, p1) {
+            let slopeCenterP0 = getSlope(centerPoint, p0);
+            let slopeCenterP1 = getSlope(centerPoint, p1);
+
+            let inverseSlopeCenterP0 = -1 / slopeCenterP0;
+            let inverseSlopeCenterP1 = -1 / slopeCenterP1;
+
+            let tangentPoint = getIntersectPoint(p0, inverseSlopeCenterP0, p1, inverseSlopeCenterP1);
+            return tangentPoint;
+        }
+
+        function getMidpoint(p0, p1) {
+            return { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
+        }
+
         function getAngle(centerPoint, point) {
             let angle = Math.atan2(point.y - centerPoint.y, point.x - centerPoint.x);
             if (angle < 0) {
@@ -150,16 +173,18 @@
         function update() {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-
-
             let circleData = {};
             if (curvePoints.length == 3) {
                 circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], curvePoints[2]);
                 drawCircle(context, circleData);
+                drawArc(context, circleData, curvePoints[0], curvePoints[2]);
+
             } else if (curvePoints.length == 2) {
                 circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], mouse);
                 drawCircle(context, circleData);
+                drawArc(context, circleData, curvePoints[0], mouse);
             }
+
 
             context.fillStyle = "cornflowerblue";
             for (let i = 0; i < curvePoints.length; i++) {
@@ -201,6 +226,21 @@
             context.beginPath();
             context.arc(circleData.x, circleData.y, 5, 0, 2 * Math.PI);
             context.fill();
+        }
+
+        function drawArc(context, circleData, p0, p2) {
+            let tangentPoint = getTangentPoint(circleData, p0, p2);
+
+            context.fillStyle = "crimson";
+            context.beginPath();
+            context.arc(tangentPoint.x, tangentPoint.y, 5, 0, 2 * Math.PI);
+            context.fill();
+
+            context.strokeStyle = "violet";
+            context.beginPath();
+            context.moveTo(p0.x, p0.y);
+            context.arcTo(tangentPoint.x, tangentPoint.y, p2.x, p2.y, circleData.radius);
+            context.stroke();
         }
 
         function animate() {
