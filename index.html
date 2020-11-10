@@ -109,31 +109,7 @@
 
             let radius = Math.abs(Math.hypot(centerPoint.x - p0.x, centerPoint.y - p0.y));
 
-            // the angle goes around counterclockwise
-            // 0 is the right side
-            // π/2 is the bottom
-            // π is left
-            // 3/2π is top
-
-            let angleToP0 = getAngle(centerPoint, p0);
-            let angleToP1 = getAngle(centerPoint, p1);
-            let angleToP2 = getAngle(centerPoint, p2);
-            // console.log("P0", angleToP0 * (180 / Math.PI));
-            // console.log("P1", angleToP1 * (180 / Math.PI));
-            // console.log("P2", angleToP2 * (180 / Math.PI));
-
-            if (angleToP2 < angleToP0 && angleToP2 < angleToP1 && angleToP0 > angleToP1) {
-                let angleSwap = angleToP2;
-                angleToP2 = angleToP0;
-                angleToP0 = angleSwap;
-            }
-
-            if (!arcMode) {
-                angleToP0 = 0;
-                angleToP2 = 2 * Math.PI;
-            }
-
-            return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: angleToP0, endAngle: angleToP2 };
+            return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
         }
 
         function getIntersectPoint(p0, slope0, p1, slope1) {
@@ -176,13 +152,21 @@
             let circleData = {};
             if (curvePoints.length == 3) {
                 circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], curvePoints[2]);
-                drawCircle(context, circleData);
-                drawArc(context, circleData, curvePoints[0], curvePoints[2]);
+                if (!arcMode) {
+                    drawCircle(context, circleData);
+                } else {
+                    drawArc(context, circleData, curvePoints[0], curvePoints[1]);
+                    drawArc(context, circleData, curvePoints[1], curvePoints[2], "purple");
+                }
 
             } else if (curvePoints.length == 2) {
                 circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], mouse);
-                drawCircle(context, circleData);
-                drawArc(context, circleData, curvePoints[0], mouse);
+                if (!arcMode) {
+                    drawCircle(context, circleData);
+                } else {
+                    drawArc(context, circleData, curvePoints[0], curvePoints[1]);
+                    drawArc(context, circleData, curvePoints[1], mouse, "purple");
+                }
             }
 
 
@@ -228,15 +212,15 @@
             context.fill();
         }
 
-        function drawArc(context, circleData, p0, p2) {
+        function drawArc(context, circleData, p0, p2, color = "violet") {
             let tangentPoint = getTangentPoint(circleData, p0, p2);
 
-            context.fillStyle = "crimson";
+            context.fillStyle = color;
             context.beginPath();
             context.arc(tangentPoint.x, tangentPoint.y, 5, 0, 2 * Math.PI);
             context.fill();
 
-            context.strokeStyle = "violet";
+            context.strokeStyle = color;
             context.beginPath();
             context.moveTo(p0.x, p0.y);
             context.arcTo(tangentPoint.x, tangentPoint.y, p2.x, p2.y, circleData.radius);
