@@ -167,6 +167,13 @@
                     drawArc(context, circleData, curvePoints[0], curvePoints[1]);
                     drawArc(context, circleData, curvePoints[1], mouse, "purple");
                 }
+            } else if (curvePoints.length == 1) {
+                let offsetMidpoint = getMidpoint(curvePoints[0], mouse);
+                offsetMidpoint.x += window.devicePixelRatio;
+                offsetMidpoint.y += window.devicePixelRatio;
+                circleData = computeCircleFromPoints(curvePoints[0], offsetMidpoint, mouse);
+                let color = arcMode ? null : "orange";
+                drawArc(context, circleData, curvePoints[0], mouse, color);
             }
 
 
@@ -221,6 +228,7 @@
             context.fill();
 
             context.strokeStyle = color;
+            context.lineWidth = 4;
             context.beginPath();
             context.moveTo(p0.x, p0.y);
             context.arcTo(tangentPoint.x, tangentPoint.y, p2.x, p2.y, circleData.radius);
