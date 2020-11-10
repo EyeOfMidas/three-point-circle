@@ -96,7 +96,7 @@
             }
         }
 
-        function computeCircleFromPoints(p0, p1, p2) {
+        function computeCircleFrom3Points(p0, p1, p2) {
             let midpointOfP0P1 = getMidpoint(p0, p1);
             let midpointOfP1P2 = getMidpoint(p1, p2);
             let slopeOfP0P1 = getSlope(p0, p1);
@@ -110,6 +110,18 @@
             let radius = Math.abs(Math.hypot(centerPoint.x - p0.x, centerPoint.y - p0.y));
 
             return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
+        }
+
+        function getDistance(p0, p1) {
+            return Math.hypot(p1.x - p0.x, p1.y - p0.y);
+        }
+
+        function computeCircleFrom2Points(p0, p1) {
+            let midpointOfP0P1 = getMidpoint(p0, p1);
+
+            let radius = Math.abs(Math.hypot(midpointOfP0P1.x - p0.x, midpointOfP0P1.y - p0.y));
+
+            return { x: midpointOfP0P1.x, y: midpointOfP0P1.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
         }
 
         function getIntersectPoint(p0, slope0, p1, slope1) {
@@ -148,10 +160,10 @@
 
         function update() {
             context.clearRect(0, 0, canvas.width, canvas.height);
-
+            context.setLineDash([]);
             let circleData = {};
             if (curvePoints.length == 3) {
-                circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], curvePoints[2]);
+                circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], curvePoints[2]);
                 if (!arcMode) {
                     drawCircle(context, circleData);
                 } else {
@@ -160,18 +172,31 @@
                 }
 
             } else if (curvePoints.length == 2) {
-                circleData = computeCircleFromPoints(curvePoints[0], curvePoints[1], mouse);
+                circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], mouse);
                 if (!arcMode) {
                     drawCircle(context, circleData);
                 } else {
-                    drawArc(context, circleData, curvePoints[0], curvePoints[1]);
-                    drawArc(context, circleData, curvePoints[1], mouse, "purple");
+                    let twoPointCircleData = computeCircleFrom2Points(curvePoints[0], curvePoints[1]);
+                    let twoOtherPointCircleData = computeCircleFrom2Points(curvePoints[1], mouse);
+                    if (getDistance(mouse, twoPointCircleData) > twoPointCircleData.radius &&
+                        getDistance(curvePoints[0], twoOtherPointCircleData) > twoOtherPointCircleData.radius) {
+                        drawArc(context, circleData, curvePoints[0], curvePoints[1]);
+                        drawArc(context, circleData, curvePoints[1], mouse, "purple");
+                    } else {
+                        context.setLineDash([20, 10]);
+                        context.strokeStyle = "crimson";
+                        context.beginPath();
+                        context.moveTo(curvePoints[0].x, curvePoints[0].y);
+                        context.lineTo(curvePoints[1].x, curvePoints[1].y);
+                        context.lineTo(mouse.x, mouse.y);
+                        context.stroke();
+                    }
                 }
             } else if (curvePoints.length == 1) {
                 let offsetMidpoint = getMidpoint(curvePoints[0], mouse);
                 offsetMidpoint.x += window.devicePixelRatio;
                 offsetMidpoint.y += window.devicePixelRatio;
-                circleData = computeCircleFromPoints(curvePoints[0], offsetMidpoint, mouse);
+                circleData = computeCircleFrom3Points(curvePoints[0], offsetMidpoint, mouse);
                 let color = arcMode ? null : "orange";
                 drawArc(context, circleData, curvePoints[0], mouse, color);
             }
