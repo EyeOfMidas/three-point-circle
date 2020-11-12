@@ -1,290 +1,290 @@
 <html>
 <style type="text/css">
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-    }
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
 
-    canvas {
-        width: 100%;
-        height: 100%;
-    }
+	canvas {
+		width: 100%;
+		height: 100%;
+	}
 
-    .footer {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        position: absolute;
-        width: 100%;
-        height: 20px;
-        color: black;
-        text-align: center;
-        bottom: 4px;
-    }
+	.footer {
+		font-family: Verdana, Geneva, Tahoma, sans-serif;
+		position: absolute;
+		width: 100%;
+		height: 20px;
+		color: black;
+		text-align: center;
+		bottom: 4px;
+	}
 
-    .footer a,
-    a:visited {
-        color: black;
-        text-decoration: none;
-    }
+	.footer a,
+	a:visited {
+		color: black;
+		text-decoration: none;
+	}
 
-    .footer a:hover,
-    a:active {
-        text-decoration: underline;
-    }
+	.footer a:hover,
+	a:active {
+		text-decoration: underline;
+	}
 
-    /* octocat */
-    .github-corner:hover .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
-    }
+	/* octocat */
+	.github-corner:hover .octo-arm {
+		animation: octocat-wave 560ms ease-in-out
+	}
 
-    @keyframes octocat-wave {
+	@keyframes octocat-wave {
 
-        0%,
-        100% {
-            transform: rotate(0)
-        }
+		0%,
+		100% {
+			transform: rotate(0)
+		}
 
-        20%,
-        60% {
-            transform: rotate(-25deg)
-        }
+		20%,
+		60% {
+			transform: rotate(-25deg)
+		}
 
-        40%,
-        80% {
-            transform: rotate(10deg)
-        }
-    }
+		40%,
+		80% {
+			transform: rotate(10deg)
+		}
+	}
 
-    @media (max-width:500px) {
-        .github-corner:hover .octo-arm {
-            animation: none
-        }
+	@media (max-width:500px) {
+		.github-corner:hover .octo-arm {
+			animation: none
+		}
 
-        .github-corner .octo-arm {
-            animation: octocat-wave 560ms ease-in-out
-        }
-    }
+		.github-corner .octo-arm {
+			animation: octocat-wave 560ms ease-in-out
+		}
+	}
 </style>
 
 <body>
-    <!-- https://github.com/tholman/github-corners -->
-    <a href="https://github.com/eyeofmidas/three-point-circle" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
-        </svg></a>
-    <canvas></canvas>
-    <div class="footer">Click to place 3 points, right-click for arc mode - Created by <a href="https://twitter.com/eyeofmidas" target="_blank">@EyeOfMidas</a> and <a href="https://twitter.com/dotariel" target="_blank">@dotariel</a></div>
-    <script>
-        var canvas, context;
-        var mouse = { x: 0, y: 0, button: null };
-        var arcMode = false;
-        document.addEventListener("DOMContentLoaded", () => {
-            canvas = document.getElementsByTagName("canvas")[0];
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-            context = canvas.getContext("2d");
-            animate();
-        });
+	<!-- https://github.com/tholman/github-corners -->
+	<a href="https://github.com/eyeofmidas/three-point-circle" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+			<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+			<path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+			<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+		</svg></a>
+	<canvas></canvas>
+	<div class="footer">Click to place 3 points, right-click for arc mode - Created by <a href="https://twitter.com/eyeofmidas" target="_blank">@EyeOfMidas</a> and <a href="https://twitter.com/dotariel" target="_blank">@dotariel</a></div>
+	<script>
+		var canvas, context;
+		var mouse = { x: 0, y: 0, button: null };
+		var arcMode = false;
+		document.addEventListener("DOMContentLoaded", () => {
+			canvas = document.getElementsByTagName("canvas")[0];
+			canvas.width = canvas.clientWidth;
+			canvas.height = canvas.clientHeight;
+			context = canvas.getContext("2d");
+			animate();
+		});
 
-        let curvePoints = [];
+		let curvePoints = [];
 
-        function placePoint(point) {
-            curvePoints.push({ x: point.x, y: point.y });
-            if (curvePoints.length > 3) {
-                curvePoints = [];
-            }
-        }
+		function placePoint(point) {
+			curvePoints.push({ x: point.x, y: point.y });
+			if (curvePoints.length > 3) {
+				curvePoints = [];
+			}
+		}
 
-        function computeCircleFrom3Points(p0, p1, p2) {
-            let midpointOfP0P1 = getMidpoint(p0, p1);
-            let midpointOfP1P2 = getMidpoint(p1, p2);
-            let slopeOfP0P1 = getSlope(p0, p1);
-            let slopeOfP1P2 = getSlope(p1, p2);
+		function computeCircleFrom3Points(p0, p1, p2) {
+			let midpointOfP0P1 = getMidpoint(p0, p1);
+			let midpointOfP1P2 = getMidpoint(p1, p2);
+			let slopeOfP0P1 = getSlope(p0, p1);
+			let slopeOfP1P2 = getSlope(p1, p2);
 
-            let inverseSlopeOfP0P1 = -1 / slopeOfP0P1;
-            let inverseSlopeOfP1P2 = -1 / slopeOfP1P2;
+			let inverseSlopeOfP0P1 = -1 / slopeOfP0P1;
+			let inverseSlopeOfP1P2 = -1 / slopeOfP1P2;
 
-            let centerPoint = getIntersectPoint(midpointOfP0P1, inverseSlopeOfP0P1, midpointOfP1P2, inverseSlopeOfP1P2);
+			let centerPoint = getIntersectPoint(midpointOfP0P1, inverseSlopeOfP0P1, midpointOfP1P2, inverseSlopeOfP1P2);
 
-            let radius = Math.abs(Math.hypot(centerPoint.x - p0.x, centerPoint.y - p0.y));
+			let radius = Math.abs(getDistance(p0, centerPoint));
 
-            return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
-        }
+			return { x: centerPoint.x, y: centerPoint.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
+		}
 
-        function getDistance(p0, p1) {
-            return Math.hypot(p1.x - p0.x, p1.y - p0.y);
-        }
+		function getDistance(p0, p1) {
+			return Math.hypot(p1.x - p0.x, p1.y - p0.y);
+		}
 
-        function computeCircleFrom2Points(p0, p1) {
-            let midpointOfP0P1 = getMidpoint(p0, p1);
+		function computeCircleFrom2Points(p0, p1) {
+			let midpointOfP0P1 = getMidpoint(p0, p1);
 
-            let radius = Math.abs(Math.hypot(midpointOfP0P1.x - p0.x, midpointOfP0P1.y - p0.y));
+			let radius = Math.abs(getDistance(p0, midpointOfP0P1));
 
-            return { x: midpointOfP0P1.x, y: midpointOfP0P1.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
-        }
+			return { x: midpointOfP0P1.x, y: midpointOfP0P1.y, radius: radius, startAngle: 0, endAngle: 2 * Math.PI };
+		}
 
-        function getIntersectPoint(p0, slope0, p1, slope1) {
-            return {
-                x: (- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1),
-                y: slope0 * ((- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1) - p0.x) + p0.y
-            };
-        }
+		function getIntersectPoint(p0, slope0, p1, slope1) {
+			return {
+				x: (- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1),
+				y: slope0 * ((- (slope1 * p1.x) + p1.y - p0.y + (slope0 * p0.x)) / (slope0 - slope1) - p0.x) + p0.y
+			};
+		}
 
-        function getSlope(p0, p1) {
-            return (p1.y - p0.y) / (p1.x - p0.x);
-        }
+		function getSlope(p0, p1) {
+			return (p1.y - p0.y) / (p1.x - p0.x);
+		}
 
-        function getTangentPoint(centerPoint, p0, p1) {
-            let slopeCenterP0 = getSlope(centerPoint, p0);
-            let slopeCenterP1 = getSlope(centerPoint, p1);
+		function getTangentPoint(centerPoint, p0, p1) {
+			let slopeCenterP0 = getSlope(centerPoint, p0);
+			let slopeCenterP1 = getSlope(centerPoint, p1);
 
-            let inverseSlopeCenterP0 = -1 / slopeCenterP0;
-            let inverseSlopeCenterP1 = -1 / slopeCenterP1;
+			let inverseSlopeCenterP0 = -1 / slopeCenterP0;
+			let inverseSlopeCenterP1 = -1 / slopeCenterP1;
 
-            let tangentPoint = getIntersectPoint(p0, inverseSlopeCenterP0, p1, inverseSlopeCenterP1);
-            return tangentPoint;
-        }
+			let tangentPoint = getIntersectPoint(p0, inverseSlopeCenterP0, p1, inverseSlopeCenterP1);
+			return tangentPoint;
+		}
 
-        function getMidpoint(p0, p1) {
-            return { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
-        }
+		function getMidpoint(p0, p1) {
+			return { x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2 };
+		}
 
-        function getAngle(centerPoint, point) {
-            let angle = Math.atan2(point.y - centerPoint.y, point.x - centerPoint.x);
-            if (angle < 0) {
-                angle += 2 * Math.PI;
-            }
-            return angle;
-        }
+		function getAngle(centerPoint, point) {
+			let angle = Math.atan2(point.y - centerPoint.y, point.x - centerPoint.x);
+			if (angle < 0) {
+				angle += 2 * Math.PI;
+			}
+			return angle;
+		}
 
-        function update() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.setLineDash([]);
-            let circleData = {};
-            if (curvePoints.length == 3) {
-                circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], curvePoints[2]);
-                if (!arcMode) {
-                    drawCircle(context, circleData);
-                } else {
-                    drawArc(context, circleData, curvePoints[0], curvePoints[1]);
-                    drawArc(context, circleData, curvePoints[1], curvePoints[2], "purple");
-                }
+		function update() {
+			context.clearRect(0, 0, canvas.width, canvas.height);
+			context.setLineDash([]);
+			let circleData = {};
+			if (curvePoints.length == 3) {
+				circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], curvePoints[2]);
+				if (!arcMode) {
+					drawCircle(context, circleData);
+				} else {
+					drawArc(context, circleData, curvePoints[0], curvePoints[1]);
+					drawArc(context, circleData, curvePoints[1], curvePoints[2], "purple");
+				}
 
-            } else if (curvePoints.length == 2) {
-                circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], mouse);
-                if (!arcMode) {
-                    drawCircle(context, circleData);
-                } else {
-                    let twoPointCircleData = computeCircleFrom2Points(curvePoints[0], curvePoints[1]);
-                    let twoOtherPointCircleData = computeCircleFrom2Points(curvePoints[1], mouse);
-                    if (getDistance(mouse, twoPointCircleData) > twoPointCircleData.radius &&
-                        getDistance(curvePoints[0], twoOtherPointCircleData) > twoOtherPointCircleData.radius) {
-                        drawArc(context, circleData, curvePoints[0], curvePoints[1]);
-                        drawArc(context, circleData, curvePoints[1], mouse, "purple");
-                    } else {
-                        context.setLineDash([20, 10]);
-                        context.strokeStyle = "crimson";
-                        context.beginPath();
-                        context.moveTo(curvePoints[0].x, curvePoints[0].y);
-                        context.lineTo(curvePoints[1].x, curvePoints[1].y);
-                        context.lineTo(mouse.x, mouse.y);
-                        context.stroke();
-                    }
-                }
-            } else if (curvePoints.length == 1) {
-                let offsetMidpoint = getMidpoint(curvePoints[0], mouse);
-                offsetMidpoint.x += window.devicePixelRatio;
-                offsetMidpoint.y += window.devicePixelRatio;
-                circleData = computeCircleFrom3Points(curvePoints[0], offsetMidpoint, mouse);
-                let color = arcMode ? null : "orange";
-                drawArc(context, circleData, curvePoints[0], mouse, color);
-            }
+			} else if (curvePoints.length == 2) {
+				circleData = computeCircleFrom3Points(curvePoints[0], curvePoints[1], mouse);
+				if (!arcMode) {
+					drawCircle(context, circleData);
+				} else {
+					let twoPointCircleData = computeCircleFrom2Points(curvePoints[0], curvePoints[1]);
+					let twoOtherPointCircleData = computeCircleFrom2Points(curvePoints[1], mouse);
+					if (getDistance(mouse, twoPointCircleData) > twoPointCircleData.radius &&
+						getDistance(curvePoints[0], twoOtherPointCircleData) > twoOtherPointCircleData.radius) {
+						drawArc(context, circleData, curvePoints[0], curvePoints[1]);
+						drawArc(context, circleData, curvePoints[1], mouse, "purple");
+					} else {
+						context.setLineDash([20, 10]);
+						context.strokeStyle = "crimson";
+						context.beginPath();
+						context.moveTo(curvePoints[0].x, curvePoints[0].y);
+						context.lineTo(curvePoints[1].x, curvePoints[1].y);
+						context.lineTo(mouse.x, mouse.y);
+						context.stroke();
+					}
+				}
+			} else if (curvePoints.length == 1) {
+				let offsetMidpoint = getMidpoint(curvePoints[0], mouse);
+				offsetMidpoint.x += window.devicePixelRatio;
+				offsetMidpoint.y += window.devicePixelRatio;
+				circleData = computeCircleFrom3Points(curvePoints[0], offsetMidpoint, mouse);
+				let color = arcMode ? null : "orange";
+				drawArc(context, circleData, curvePoints[0], mouse, color);
+			}
 
 
-            context.fillStyle = "cornflowerblue";
-            for (let i = 0; i < curvePoints.length; i++) {
-                context.beginPath();
-                context.arc(curvePoints[i].x, curvePoints[i].y, 5, 0, 2 * Math.PI);
-                context.fill();
-            }
+			context.fillStyle = "cornflowerblue";
+			for (let i = 0; i < curvePoints.length; i++) {
+				context.beginPath();
+				context.arc(curvePoints[i].x, curvePoints[i].y, 5, 0, 2 * Math.PI);
+				context.fill();
+			}
 
-            context.fillStyle = "black";
-            for (let i = 0; i < curvePoints.length; i++) {
-                let angle = getAngle(circleData, curvePoints[i]) * (180 / Math.PI);
-                context.fillText(`p${i} ${angle.toPrecision(3)}`, curvePoints[i].x - 10, curvePoints[i].y - 10);
-            }
+			context.fillStyle = "black";
+			for (let i = 0; i < curvePoints.length; i++) {
+				let angle = getAngle(circleData, curvePoints[i]) * (180 / Math.PI);
+				context.fillText(`p${i} ${angle.toPrecision(3)}`, curvePoints[i].x - 10, curvePoints[i].y - 10);
+			}
 
-            context.fillStyle = "crimson";
-            if (mouse.button == 0) {
-                context.fillStyle = "lime";
-                mouse.button = null;
-                placePoint(mouse);
-            }
-            if (mouse.button == 2) {
-                arcMode = !arcMode;
-                mouse.button = null;
-            }
-            context.beginPath();
-            context.arc(mouse.x - 2.5, mouse.y - 2.5, 5, 0, 2 * Math.PI);
-            context.fill();
-        }
+			context.fillStyle = "crimson";
+			if (mouse.button == 0) {
+				context.fillStyle = "lime";
+				mouse.button = null;
+				placePoint(mouse);
+			}
+			if (mouse.button == 2) {
+				arcMode = !arcMode;
+				mouse.button = null;
+			}
+			context.beginPath();
+			context.arc(mouse.x - 2.5, mouse.y - 2.5, 5, 0, 2 * Math.PI);
+			context.fill();
+		}
 
-        function drawCircle(context, circleData) {
-            context.strokeStyle = "orange";
-            context.fillStyle = "orange";
-            context.lineWidth = 4;
-            context.beginPath();
-            context.arc(circleData.x, circleData.y, circleData.radius, circleData.startAngle, circleData.endAngle);
-            context.stroke();
+		function drawCircle(context, circleData) {
+			context.strokeStyle = "orange";
+			context.fillStyle = "orange";
+			context.lineWidth = 4;
+			context.beginPath();
+			context.arc(circleData.x, circleData.y, circleData.radius, circleData.startAngle, circleData.endAngle);
+			context.stroke();
 
-            /* center point */
-            context.beginPath();
-            context.arc(circleData.x, circleData.y, 5, 0, 2 * Math.PI);
-            context.fill();
-        }
+			/* center point */
+			context.beginPath();
+			context.arc(circleData.x, circleData.y, 5, 0, 2 * Math.PI);
+			context.fill();
+		}
 
-        function drawArc(context, circleData, p0, p2, color = "violet") {
-            let tangentPoint = getTangentPoint(circleData, p0, p2);
+		function drawArc(context, circleData, p0, p2, color = "violet") {
+			let tangentPoint = getTangentPoint(circleData, p0, p2);
 
-            context.fillStyle = color;
-            context.beginPath();
-            context.arc(tangentPoint.x, tangentPoint.y, 5, 0, 2 * Math.PI);
-            context.fill();
+			context.fillStyle = color;
+			context.beginPath();
+			context.arc(tangentPoint.x, tangentPoint.y, 5, 0, 2 * Math.PI);
+			context.fill();
 
-            context.strokeStyle = color;
-            context.lineWidth = 4;
-            context.beginPath();
-            context.moveTo(p0.x, p0.y);
-            context.arcTo(tangentPoint.x, tangentPoint.y, p2.x, p2.y, circleData.radius);
-            context.stroke();
-        }
+			context.strokeStyle = color;
+			context.lineWidth = 4;
+			context.beginPath();
+			context.moveTo(p0.x, p0.y);
+			context.arcTo(tangentPoint.x, tangentPoint.y, p2.x, p2.y, circleData.radius);
+			context.stroke();
+		}
 
-        function animate() {
-            update();
-            requestAnimationFrame(animate);
-        }
+		function animate() {
+			update();
+			requestAnimationFrame(animate);
+		}
 
-        requestAnimationFrame(animate);
+		requestAnimationFrame(animate);
 
-        document.addEventListener("mousemove", (event) => {
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-        });
+		document.addEventListener("mousemove", (event) => {
+			mouse.x = event.clientX;
+			mouse.y = event.clientY;
+		});
 
-        document.addEventListener("mousedown", (event) => {
-            mouse.button = event.button;
-        });
+		document.addEventListener("mousedown", (event) => {
+			mouse.button = event.button;
+		});
 
-        document.addEventListener("mouseup", (event) => {
-            mouse.button = null;
-        });
+		document.addEventListener("mouseup", (event) => {
+			mouse.button = null;
+		});
 
-        document.addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            return false;
-        });
-    </script>
+		document.addEventListener("contextmenu", (event) => {
+			event.preventDefault();
+			return false;
+		});
+	</script>
 </body>
 
 </html>
